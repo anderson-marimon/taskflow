@@ -8,12 +8,12 @@ export type TApiResponse<TData = any> = {
   internalCode: EInternalCode;
   prefix: string;
   message: string;
-  data: TData;
-  errors: TOriginError[];
+  data?: TData;
+  errors?: TOriginError[];
 };
 
 export class ApiResponse {
-  private apiResponse: Partial<TApiResponse> = { data: null, errors: [] };
+  private apiResponse: Partial<TApiResponse> = {};
 
   public static create() {
     return new ApiResponse();
@@ -63,6 +63,22 @@ export class ApiResponse {
       }
     }
 
-    return Object.assign(this.apiResponse);
+    const response: TApiResponse = {
+      ok: this.apiResponse.ok!,
+      statusCode: this.apiResponse.statusCode!,
+      internalCode: this.apiResponse.internalCode!,
+      prefix: this.apiResponse.prefix!,
+      message: this.apiResponse.message!,
+    };
+
+    if (this.apiResponse.data != null) {
+      response.data = this.apiResponse.data;
+    }
+
+    if (this.apiResponse.errors && this.apiResponse.errors.length > 0) {
+      response.errors = this.apiResponse.errors;
+    }
+
+    return response;
   }
 }
