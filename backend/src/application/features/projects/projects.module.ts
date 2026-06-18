@@ -13,6 +13,7 @@ import { GetProjectUseCase } from '@features/projects/use-cases/get-project.use-
 import { UpdateProjectUseCase } from '@features/projects/use-cases/update-project.use-case';
 import { DeleteProjectUseCase } from '@features/projects/use-cases/delete-project.use-case';
 import { AddMemberUseCase } from '@features/projects/use-cases/add-member.use-case';
+import { GetProjectSummaryUseCase } from '@features/projects/use-cases/get-project-summary.use-case';
 import { ProjectsController } from '@features/projects/projects.controller';
 import { TasksModule } from '@features/projects/modules/tasks/tasks.module';
 
@@ -29,6 +30,7 @@ import { TasksModule } from '@features/projects/modules/tasks/tasks.module';
     UpdateProjectUseCase,
     DeleteProjectUseCase,
     AddMemberUseCase,
+    GetProjectSummaryUseCase,
     VerifyProjectAccessSubquery,
     FindUserByIdSubquery,
     ProjectsService,
