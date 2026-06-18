@@ -8,8 +8,7 @@ import { SESSION_STORE } from '@services/auth/session-store.port';
 import type { SessionStore } from '@services/auth/session-store.port';
 import { EInternalCode } from '@tools/internal-codes';
 import { FindUserByEmailSubquery } from '@features/authentication/subqueries/find-user-by-email.subquery';
-
-export type LoginDto = { email: string; password: string };
+import { LoginDto } from '@features/authentication/dtos/body/login.dto';
 
 const INVALID_CREDENTIALS_RESPONSE = (): TApiResponse =>
   ApiResponse.create()

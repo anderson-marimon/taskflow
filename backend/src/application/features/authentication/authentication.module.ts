@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
+import type { JwtSignOptions } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthEnv } from '@environment/auth.environment';
 import { DbSessionStore } from '@services/auth/db-session-store';
@@ -25,7 +26,7 @@ import { AuthenticationController } from '@features/authentication/authenticatio
       global: true,
       useFactory: () => ({
         secret: AuthEnv.get().JWT_SECRET,
-        signOptions: { expiresIn: AuthEnv.get().JWT_EXPIRES_IN as any },
+        signOptions: { expiresIn: AuthEnv.get().JWT_EXPIRES_IN as JwtSignOptions['expiresIn'] },
       }),
     }),
   ],
