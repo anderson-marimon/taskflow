@@ -1,0 +1,65 @@
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Response } from 'express';
+import { Public } from '@decorators/public.decorator';
+import { CurrentUser, JwtPayload } from '@decorators/jwt-payload.decorator';
+import { TJwtPayload } from '@services/auth/session-store.port';
+import { RegisterDto } from './dtos/body/register.dto';
+import { LoginDto } from './dtos/body/login.dto';
+import { RegisterUseCase } from './use-cases/register.use-case';
+import { LoginUseCase } from './use-cases/login.use-case';
+import { LogoutUseCase } from './use-cases/logout.use-case';
+import { UsersService } from './services/users.service';
+
+@ApiTags('Authentication')
+@Controller('auth')
+export class AuthenticationController {
+  constructor(
+    private readonly registerUseCase: RegisterUseCase,
+    private readonly loginUseCase: LoginUseCase,
+    private readonly logoutUseCase: LogoutUseCase,
+    private readonly usersService: UsersService,
+  ) {}
+
+  @Public()
+  @Post('register')
+  @ApiOperation({ summary: 'Registrar un nuevo usuario' })
+  @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente' })
+  @ApiResponse({ status: 400, description: 'Datos de entrada inválidos' })
+  @ApiResponse({ status: 409, description: 'El email ya está registrado' })
+  async register(@Body() dto: RegisterDto, @Res() res: Response) {
+    const result = await this.registerUseCase.execute(dto);
+    res.status(result.statusCode).json(result);
+  }
+
+  @Public()
+  @Post('login')
+  @ApiOperation({ summary: 'Iniciar sesión y obtener token de acceso' })
+  @ApiResponse({ status: 200, description: 'Inicio de sesión exitoso con accessToken' })
+  @ApiResponse({ status: 401, description: 'Credenciales inválidas' })
+  async login(@Body() dto: LoginDto, @Res() res: Response) {
+    const result = await this.loginUseCase.execute(dto);
+    res.status(result.statusCode).json(result);
+  }
+
+  @ApiBearerAuth()
+  @Post('logout')
+  @ApiOperation({ summary: 'Cerrar sesión y revocar el token actual' })
+  @ApiResponse({ status: 200, description: 'Sesión cerrada exitosamente' })
+  @ApiResponse({ status: 401, description: 'Token inválido o sesión inactiva' })
+  async logout(@JwtPayload() payload: TJwtPayload, @Res() res: Response) {
+    const result = await this.logoutUseCase.execute(payload.jti);
+    res.status(result.statusCode).json(result);
+  }
+
+  @ApiBearerAuth()
+  @Post('me')
+  @ApiOperation({ summary: 'Obtener datos del usuario autenticado' })
+  @ApiResponse({ status: 200, description: 'Datos del usuario autenticado' })
+  @ApiResponse({ status: 401, description: 'Token inválido o sesión inactiva' })
+  async me(@CurrentUser() userId: string, @Res() res: Response) {
+    const user = await this.usersService.findById(userId);
+    if (user) user.prune(['passwordHash']);
+    res.status(200).json(user);
+  }
+}
