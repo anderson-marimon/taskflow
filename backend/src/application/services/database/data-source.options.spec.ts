@@ -1,4 +1,4 @@
-import { buildDataSourceOptions } from './data-source.options';
+import { buildDataSourceOptions } from '@services/database/data-source.options';
 
 jest.mock('@environment/database.environment', () => ({
   DatabaseEnv: {

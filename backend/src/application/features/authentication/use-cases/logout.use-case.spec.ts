@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { LogoutUseCase } from './logout.use-case';
+import { LogoutUseCase } from '@features/authentication/use-cases/logout.use-case';
 import { SessionStore } from '@services/auth/session-store.port';
 
 const mockSessionStore: SessionStore = {

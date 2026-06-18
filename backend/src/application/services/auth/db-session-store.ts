@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Session } from '@features/authentication/entities/session.entity';
 import { Repository } from 'typeorm';
-import { SessionStore } from './session-store.port';
+import { SessionStore } from '@services/auth/session-store.port';
 
 @Injectable()
 export class DbSessionStore implements SessionStore {

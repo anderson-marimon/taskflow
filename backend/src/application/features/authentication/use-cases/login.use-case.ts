@@ -7,7 +7,7 @@ import { HashUtil } from '@common/utils/hash.util';
 import { SESSION_STORE } from '@services/auth/session-store.port';
 import type { SessionStore } from '@services/auth/session-store.port';
 import { EInternalCode } from '@tools/internal-codes';
-import { FindUserByEmailSubquery } from '../subqueries/find-user-by-email.subquery';
+import { FindUserByEmailSubquery } from '@features/authentication/subqueries/find-user-by-email.subquery';
 
 export type LoginDto = { email: string; password: string };
 

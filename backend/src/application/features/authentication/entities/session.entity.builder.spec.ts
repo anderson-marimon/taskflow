@@ -1,5 +1,5 @@
-import { SessionEntityBuilder } from './session.entity.builder';
-import { Session } from './session.entity';
+import { SessionEntityBuilder } from '@features/authentication/entities/session.entity.builder';
+import { Session } from '@features/authentication/entities/session.entity';
 
 describe('SessionEntityBuilder', () => {
   describe('build()', () => {

@@ -1,10 +1,10 @@
 import { HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { LoginUseCase } from './login.use-case';
-import { FindUserByEmailSubquery } from '../subqueries/find-user-by-email.subquery';
+import { LoginUseCase } from '@features/authentication/use-cases/login.use-case';
+import { FindUserByEmailSubquery } from '@features/authentication/subqueries/find-user-by-email.subquery';
 import { SessionStore } from '@services/auth/session-store.port';
 import { HashUtil } from '@common/utils/hash.util';
-import { User } from '../entities/user.entity';
+import { User } from '@features/authentication/entities/user.entity';
 import { EInternalCode } from '@tools/internal-codes';
 
 jest.mock('@common/utils/hash.util');

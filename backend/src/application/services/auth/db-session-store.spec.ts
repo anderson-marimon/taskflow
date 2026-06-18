@@ -1,4 +1,4 @@
-import { DbSessionStore } from './db-session-store';
+import { DbSessionStore } from '@services/auth/db-session-store';
 import { Session } from '@features/authentication/entities/session.entity';
 import { Repository } from 'typeorm';
 

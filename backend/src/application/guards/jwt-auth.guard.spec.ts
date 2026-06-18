@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtAuthGuard } from '@guards/jwt-auth.guard';
 import { SessionStore } from '@services/auth/session-store.port';
 import { EInternalCode } from '@tools/internal-codes';
 

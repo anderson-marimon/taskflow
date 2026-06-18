@@ -1,5 +1,5 @@
 import { Logger } from '@nestjs/common';
-import { ServerEnv } from './server.environment';
+import { ServerEnv } from '@environment/server.environment';
 
 describe('ServerEnv', () => {
   const VALID_ENV = {

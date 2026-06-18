@@ -1,4 +1,4 @@
-import { User } from './user.entity';
+import { User } from '@features/authentication/entities/user.entity';
 
 export class UserEntityBuilder {
   private readonly user: Partial<User> = {};

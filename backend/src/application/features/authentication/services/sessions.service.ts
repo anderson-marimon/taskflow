@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Session } from '../entities/session.entity';
+import { Session } from '@features/authentication/entities/session.entity';
 
 @Injectable()
 export class SessionsService {
@@ -14,7 +14,7 @@ export class SessionsService {
     return this.sessionsRepository.save(session);
   }
 
-  async findByJti(jti: string): Promise<Session | null> {
+  async findByJti(jti: string): Promise<Nullable<Session>> {
     return this.sessionsRepository.findOne({ where: { jti } });
   }
 

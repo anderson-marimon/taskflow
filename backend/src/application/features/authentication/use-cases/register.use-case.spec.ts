@@ -1,8 +1,8 @@
 import { HttpStatus } from '@nestjs/common';
-import { RegisterUseCase } from './register.use-case';
-import { ValidateRegisterSubquery } from '../subqueries/validate-register.subquery';
-import { UsersService } from '../services/users.service';
-import { User } from '../entities/user.entity';
+import { RegisterUseCase } from '@features/authentication/use-cases/register.use-case';
+import { ValidateRegisterSubquery } from '@features/authentication/subqueries/validate-register.subquery';
+import { UsersService } from '@features/authentication/services/users.service';
+import { User } from '@features/authentication/entities/user.entity';
 import { EInternalCode } from '@tools/internal-codes';
 
 const mockValidateRegister = {

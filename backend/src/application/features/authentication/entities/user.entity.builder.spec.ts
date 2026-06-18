@@ -1,5 +1,5 @@
-import { UserEntityBuilder } from './user.entity.builder';
-import { User } from './user.entity';
+import { UserEntityBuilder } from '@features/authentication/entities/user.entity.builder';
+import { User } from '@features/authentication/entities/user.entity';
 
 describe('UserEntityBuilder', () => {
   describe('build()', () => {

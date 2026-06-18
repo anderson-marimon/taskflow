@@ -3,9 +3,9 @@ import { HttpStatus } from '@nestjs/common';
 import { ApiResponse, TApiResponse } from '@common/builders/server-response.builder';
 import { HashUtil } from '@common/utils/hash.util';
 import { EInternalCode } from '@tools/internal-codes';
-import { UserEntityBuilder } from '../entities/user.entity.builder';
-import { ValidateRegisterSubquery } from '../subqueries/validate-register.subquery';
-import { UsersService } from '../services/users.service';
+import { UserEntityBuilder } from '@features/authentication/entities/user.entity.builder';
+import { ValidateRegisterSubquery } from '@features/authentication/subqueries/validate-register.subquery';
+import { UsersService } from '@features/authentication/services/users.service';
 
 export type RegisterDto = { name: string; email: string; password: string };
 

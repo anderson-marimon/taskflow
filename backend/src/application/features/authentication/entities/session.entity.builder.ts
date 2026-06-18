@@ -1,4 +1,4 @@
-import { Session } from './session.entity';
+import { Session } from '@features/authentication/entities/session.entity';
 
 export class SessionEntityBuilder {
   private readonly session: Partial<Session> = {};

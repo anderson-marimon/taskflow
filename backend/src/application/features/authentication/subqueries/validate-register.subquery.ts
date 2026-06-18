@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OriginError, TOriginError } from '@common/builders/origin-error.builder';
 import { EInternalCode } from '@tools/internal-codes';
-import { UsersService } from '../services/users.service';
+import { UsersService } from '@features/authentication/services/users.service';
 
 @Injectable()
 export class ValidateRegisterSubquery {

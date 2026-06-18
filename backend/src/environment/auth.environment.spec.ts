@@ -1,4 +1,4 @@
-import { AuthEnv } from './auth.environment';
+import { AuthEnv } from '@environment/auth.environment';
 
 jest.mock('@environment/load.environment', () => ({
   loadEnv: jest.fn(),
