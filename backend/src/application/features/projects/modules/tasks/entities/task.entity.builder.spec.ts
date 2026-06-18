@@ -45,4 +45,15 @@ describe('TaskEntityBuilder', () => {
   it('build() sin projectId lanza error', () => {
     expect(() => TaskEntityBuilder.create().withTitle('Test').build()).toThrow();
   });
+
+  it('completedAt por defecto es null al construir tarea con status PENDING', () => {
+    const task = TaskEntityBuilder.create().withProjectId('uuid-project').withTitle('Test').build();
+    expect(task.completedAt).toBeNull();
+  });
+
+  it('withCompletedAt asigna la fecha correctamente', () => {
+    const date = new Date('2026-01-01T00:00:00Z');
+    const task = TaskEntityBuilder.create().withProjectId('uuid-project').withTitle('Test').withCompletedAt(date).build();
+    expect(task.completedAt).toBe(date);
+  });
 });

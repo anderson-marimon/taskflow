@@ -13,6 +13,7 @@ import { GetProjectUseCase } from '@features/projects/use-cases/get-project.use-
 import { UpdateProjectUseCase } from '@features/projects/use-cases/update-project.use-case';
 import { DeleteProjectUseCase } from '@features/projects/use-cases/delete-project.use-case';
 import { AddMemberUseCase } from '@features/projects/use-cases/add-member.use-case';
+import { GetProjectSummaryUseCase } from '@features/projects/use-cases/get-project-summary.use-case';
 
 @ApiTags('Projects')
 @ApiBearerAuth()
@@ -25,6 +26,7 @@ export class ProjectsController {
     private readonly updateProjectUseCase: UpdateProjectUseCase,
     private readonly deleteProjectUseCase: DeleteProjectUseCase,
     private readonly addMemberUseCase: AddMemberUseCase,
+    private readonly getProjectSummaryUseCase: GetProjectSummaryUseCase,
   ) {}
 
   @Post()
@@ -44,6 +46,16 @@ export class ProjectsController {
   @ApiResponse({ status: 500, description: 'Error inesperado del servidor' })
   async list(@CurrentUser() userId: string, @Query() query: GetProjectsQueryDto, @Res() res: Response) {
     const result = await this.listProjectsUseCase.execute(userId, query);
+    res.status(result.statusCode).json(result);
+  }
+
+  @Get(':projectId/summary')
+  @ApiOperation({ summary: 'Obtener resumen estadístico de tareas del proyecto' })
+  @ApiResponse({ status: 200, description: 'Resumen del proyecto' })
+  @ApiResponse({ status: 404, description: 'Proyecto no encontrado o sin acceso' })
+  @ApiResponse({ status: 500, description: 'Error inesperado del servidor' })
+  async summary(@Param() param: ProjectParamDto, @CurrentUser() userId: string, @Res() res: Response) {
+    const result = await this.getProjectSummaryUseCase.execute(param.projectId, userId);
     res.status(result.statusCode).json(result);
   }
 

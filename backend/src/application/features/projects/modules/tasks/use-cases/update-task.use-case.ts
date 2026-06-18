@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common';
 import { ApiResponse, TApiResponse } from '@common/builders/server-response.builder';
 import { InternalError } from '@common/builders/internal-error.builder';
@@ -7,6 +7,9 @@ import { VerifyProjectAccessSubquery } from '@features/projects/subqueries/verif
 import { ValidateAssigneeIsMemberSubquery } from '@features/projects/modules/tasks/subqueries/validate-assignee-is-member.subquery';
 import { TasksService } from '@features/projects/modules/tasks/services/tasks.service';
 import { UpdateTaskDto } from '@features/projects/modules/tasks/dtos/body/update-task.dto';
+import { TaskStatus } from '@features/projects/enums/task-status.enum';
+import type { CacheStore } from '@services/cache/cache.port';
+import { CACHE_STORE } from '@services/cache/cache.port';
 
 @Injectable()
 export class UpdateTaskUseCase {
@@ -14,6 +17,7 @@ export class UpdateTaskUseCase {
     private readonly verifyProjectAccess: VerifyProjectAccessSubquery,
     private readonly validateAssigneeIsMember: ValidateAssigneeIsMemberSubquery,
     private readonly tasksService: TasksService,
+    @Inject(CACHE_STORE) private readonly cache: CacheStore,
   ) {}
 
   async execute(projectId: string, taskId: string, userId: string, dto: UpdateTaskDto): Promise<TApiResponse> {
@@ -45,13 +49,21 @@ export class UpdateTaskUseCase {
         }
       }
 
+      const wasCompleted = task.status === TaskStatus.COMPLETED;
+
       task.update({
         title: dto.title,
         description: dto.description,
         status: dto.status ?? undefined,
         assigneeId: dto.assigneeId,
       });
+
+      const isCompleted = task.status === TaskStatus.COMPLETED;
+      if (!wasCompleted && isCompleted) task.completedAt = new Date();
+      else if (wasCompleted && !isCompleted) task.completedAt = null;
+
       const saved = await this.tasksService.save(task);
+      this.cache.del(`project-summary:${projectId}`);
 
       return ApiResponse.create()
         .withOk(true)
