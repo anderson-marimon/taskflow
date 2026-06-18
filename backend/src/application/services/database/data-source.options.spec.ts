@@ -7,27 +7,27 @@ jest.mock('@environment/database.environment', () => ({
 }));
 
 describe('buildDataSourceOptions', () => {
-  it('returns type postgres', () => {
+  it('retorna el type postgres', () => {
     const options = buildDataSourceOptions();
     expect(options.type).toBe('postgres');
   });
 
-  it('returns url from DatabaseEnv.get().DATABASE_URL', () => {
+  it('retorna la url desde DatabaseEnv.get().DATABASE_URL', () => {
     const options = buildDataSourceOptions();
     expect(options.url).toBe('postgresql://mock:mock@localhost:5432/test');
   });
 
-  it('returns synchronize: false', () => {
+  it('retorna synchronize en false', () => {
     const options = buildDataSourceOptions();
     expect(options.synchronize).toBe(false);
   });
 
-  it('returns logging: false', () => {
+  it('retorna logging en false', () => {
     const options = buildDataSourceOptions();
     expect(options.logging).toBe(false);
   });
 
-  it('returns migrations array with at least one string element', () => {
+  it('retorna un array de migrations con al menos un elemento string', () => {
     const options = buildDataSourceOptions();
     expect(Array.isArray(options.migrations)).toBe(true);
     expect((options.migrations as string[]).length).toBeGreaterThan(0);

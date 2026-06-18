@@ -16,7 +16,7 @@ describe('DatabaseEnv', () => {
   });
 
   describe('start()', () => {
-    it('calls process.exit(1) when DATABASE_URL is absent', () => {
+    it('llama a process.exit(1) cuando falta DATABASE_URL', () => {
       delete process.env.DATABASE_URL;
       const exitSpy = jest.spyOn(process, 'exit').mockImplementation(() => {
         throw new Error('process.exit(1)');
@@ -26,13 +26,13 @@ describe('DatabaseEnv', () => {
       exitSpy.mockRestore();
     });
 
-    it('returns an instance with DATABASE_URL when env var is valid', () => {
+    it('retorna una instancia con DATABASE_URL cuando la variable es válida', () => {
       process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/testdb';
       const instance = DatabaseEnv.start();
       expect(instance.DATABASE_URL).toBe('postgresql://test:test@localhost:5432/testdb');
     });
 
-    it('returns the same instance when called twice (singleton)', () => {
+    it('retorna la misma instancia al llamarse dos veces (singleton)', () => {
       process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/testdb';
       const first = DatabaseEnv.start();
       const second = DatabaseEnv.start();
@@ -41,7 +41,7 @@ describe('DatabaseEnv', () => {
   });
 
   describe('get()', () => {
-    it('throws when start() has not been called', () => {
+    it('lanza error cuando no se llamó a start()', () => {
       expect(() => DatabaseEnv.get()).toThrow();
     });
   });

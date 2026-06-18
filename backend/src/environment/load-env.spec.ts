@@ -15,17 +15,17 @@ describe('loadEnv', () => {
     delete process.env.TEST_TASKFLOW_SENTINEL;
   });
 
-  it('does not throw when called', () => {
+  it('no lanza error al ser invocada', () => {
     expect(() => loadEnv()).not.toThrow();
   });
 
-  it('is idempotent — config called exactly once after two loadEnv() calls', () => {
+  it('es idempotente: config se llama una sola vez tras dos llamadas a loadEnv()', () => {
     loadEnv();
     loadEnv();
     expect(dotenv.config).toHaveBeenCalledTimes(1);
   });
 
-  it('does not override env vars already set before loadEnv()', () => {
+  it('no sobreescribe variables de entorno ya definidas antes de loadEnv()', () => {
     process.env.TEST_TASKFLOW_SENTINEL = 'original';
     loadEnv();
     expect(process.env.TEST_TASKFLOW_SENTINEL).toBe('original');
