@@ -1,0 +1,79 @@
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
+    "strictPropertyInitialization": false,
+    "suppressImplicitAnyIndexErrors": false,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "ignoreDeprecations": "5.0",
+    "outDir": "dist",
+    "rootDir": ".",
+    "types": [
+      "node",
+      "jest"
+    ],
+    "paths": {
+      "@features/*": [
+        "./src/application/features/*"
+      ],
+      "@common/*": [
+        "./src/application/common/*"
+      ],
+      "@guards/*": [
+        "./src/application/guards/*"
+      ],
+      "@decorators/*": [
+        "./src/application/decorators/*"
+      ],
+      "@services/*": [
+        "./src/application/services/*"
+      ],
+      "@environment/*": [
+        "./src/environment/*"
+      ],
+      "@tools/*": [
+        "./src/tools/*"
+      ],
+      "@src/*": [
+        "./src/application/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/tools/global.d.ts",
+    "test/**/*.ts",
+    "sql/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
+  "ts-node": {
+    "files": true,
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
+}
