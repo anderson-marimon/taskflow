@@ -1,4 +1,5 @@
 import { DtoValidatorPipe } from '@common/pipes/dto-validator.pipe';
+import { AuthEnv } from '@environment/auth.environment';
 import { DatabaseEnv } from '@environment/database.environment';
 import { ServerEnv } from '@environment/server.environment';
 import { Logger } from '@nestjs/common/services/logger.service';
@@ -11,6 +12,7 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
   const env = ServerEnv.start();
   DatabaseEnv.start();
+  AuthEnv.start();
 
   const port = env.PORT;
   const apiVersion = env.API_VERSION;
