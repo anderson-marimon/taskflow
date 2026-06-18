@@ -54,24 +54,6 @@ La documentación Swagger en `http://localhost:3000/docs`.
 
 ---
 
-## Variables de entorno
-
-| Variable | Descripción | Ejemplo |
-|---|---|---|
-| `PORT` | Puerto del servidor | `3000` |
-| `API_VERSION` | Prefijo global de rutas | `v1` |
-| `ALLOWED_ORIGINS` | Orígenes CORS (CSV) | `http://localhost:3000` |
-| `ALLOWED_METHODS` | Métodos CORS (CSV) | `GET,POST,PUT,DELETE,PATCH` |
-| `ALLOWED_HEADERS` | Headers CORS (CSV) | `Content-Type,Authorization` |
-| `TRUST_PROXY_HOPS` | Saltos de proxy confiables | `1` |
-| `DATABASE_URL` | Cadena de conexión Postgres | `postgresql://taskflow:taskflow@localhost:5432/taskflow` |
-| `JWT_SECRET` | Secreto de firma del JWT | `<secret-here>` |
-| `JWT_EXPIRES_IN` | Expiración del token | `24h` |
-
-Ningún secreto se versiona: `.env` está ignorado por git, solo se versiona `.env.example`.
-
----
-
 ## Comandos
 
 | Comando | Qué hace |
@@ -155,39 +137,9 @@ Piezas clave:
 
 ---
 
-## Convenciones
-
-- **DTOs como fuente de la verdad**: propiedades `public`; los create usan `Nullable<T>` + `@ValidateIf` (sin `?` ni `@IsOptional`); los update son `PartialType(CreateDto)`; solo los query usan `?`. La validación vive en el DTO, no en el use-case.
-- **Sin comentarios en el código**: la documentación de la API vive en Swagger (`@ApiOperation`, `@ApiProperty`, `@ApiResponse`).
-- **Tipos globales**: `Nullable<T>` / `Maybe<T>` en vez de `| null` / `| undefined`.
-- **Imports por alias** (`@common`, `@features`, `@services`, `@environment`, `@tools`, etc.).
-- **Migraciones controladas**: `synchronize: false` siempre; el esquema se versiona por migración.
-- **Tests**: unitarios co-located (`*.spec.ts`), descripciones en español, instanciación directa con mocks planos.
-
----
-
 ## Documentación de la API (Swagger)
 
 Con el servidor levantado: **`http://localhost:3000/docs`**. Incluye el esquema Bearer para autenticar los endpoints protegidos.
-
-### Endpoints
-
-| Método | Ruta | Auth | Descripción |
-|---|---|---|---|
-| POST | `/v1/auth/register` | — | Registro |
-| POST | `/v1/auth/login` | — | Login (devuelve JWT 24h) |
-| POST | `/v1/auth/logout` | Bearer | Logout (invalida la sesión server-side) |
-| GET | `/v1/auth/me` | Bearer | Perfil del usuario autenticado |
-| POST | `/v1/projects` | Bearer | Crear proyecto |
-| GET | `/v1/projects` | Bearer | Listar proyectos (paginado, owner o miembro) |
-| GET | `/v1/projects/:projectId` | Bearer | Detalle del proyecto |
-| PATCH | `/v1/projects/:projectId` | Bearer | Actualizar proyecto |
-| DELETE | `/v1/projects/:projectId` | Bearer | Borrar proyecto (soft, solo owner) |
-| POST | `/v1/projects/:projectId/members` | Bearer | Agregar miembro (solo owner) |
-| GET | `/v1/projects/:projectId/summary` | Bearer | Resumen con estadísticas (cacheado) |
-| POST | `/v1/projects/:projectId/tasks` | Bearer | Crear tarea |
-| GET | `/v1/projects/:projectId/tasks` | Bearer | Listar tareas (paginado) |
-| PATCH | `/v1/projects/:projectId/tasks/:taskId` | Bearer | Actualizar tarea |
 
 ---
 
