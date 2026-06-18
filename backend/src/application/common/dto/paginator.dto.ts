@@ -8,7 +8,7 @@ export class PaginatorDto {
   @Type(() => Number)
   @IsInt({ message: 'La página debe ser un número entero' })
   @Min(1, { message: 'La página mínima es 1' })
-  page: number = 1;
+  public page: number = 1;
 
   @ApiPropertyOptional({ description: 'Tamaño de página (máximo 100)', example: 20, default: 20 })
   @IsOptional()
@@ -16,5 +16,5 @@ export class PaginatorDto {
   @IsInt({ message: 'El tamaño debe ser un número entero' })
   @Min(1, { message: 'El tamaño mínimo es 1' })
   @Max(100, { message: 'El tamaño máximo es 100' })
-  size: number = 20;
+  public size: number = 20;
 }

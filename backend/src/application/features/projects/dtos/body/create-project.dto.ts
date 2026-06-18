@@ -1,17 +1,17 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, ValidateIf } from 'class-validator';
 
 export class CreateProjectDto {
   @ApiProperty({ description: 'Nombre del proyecto', example: 'Mi Proyecto' })
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
-  name: string;
+  @IsString({ message: 'El nombre debe ser una cadena de texto' })
+  @IsNotEmpty({ message: 'El nombre es requerido' })
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+  public name: string;
 
-  @ApiPropertyOptional({ description: 'Descripción del proyecto', example: 'Descripción detallada' })
-  @IsOptional()
-  @IsString()
-  @Transform(({ value }) => value?.trim())
-  description?: string;
+  @ApiProperty({ description: 'Descripción del proyecto', example: 'Descripción detallada', nullable: true })
+  @ValidateIf((_, value) => value !== null)
+  @IsString({ message: 'La descripción debe ser una cadena de texto' })
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
+  public description: Nullable<string>;
 }

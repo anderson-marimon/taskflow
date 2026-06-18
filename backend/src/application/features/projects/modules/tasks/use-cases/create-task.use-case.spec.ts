@@ -42,7 +42,7 @@ describe('CreateTaskUseCase', () => {
     (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([null, {}]);
     (mockTasksService.save as jest.Mock).mockResolvedValue(savedTask);
 
-    const result = await useCase.execute(projectId, userId, { title: 'Nueva tarea' });
+    const result = await useCase.execute(projectId, userId, { title: 'Nueva tarea', description: null, status: null, assigneeId: null });
 
     expect(result.statusCode).toBe(HttpStatus.CREATED);
     expect(result.ok).toBe(true);
@@ -62,7 +62,7 @@ describe('CreateTaskUseCase', () => {
     (mockValidateAssigneeIsMember.execute as jest.Mock).mockResolvedValue(true);
     (mockTasksService.save as jest.Mock).mockResolvedValue(savedTask);
 
-    const result = await useCase.execute(projectId, userId, { title: 'Tarea con asignado', assigneeId: 'member-uuid' });
+    const result = await useCase.execute(projectId, userId, { title: 'Tarea con asignado', description: null, status: null, assigneeId: 'member-uuid' });
 
     expect(result.statusCode).toBe(HttpStatus.CREATED);
     expect(result.ok).toBe(true);
@@ -72,7 +72,7 @@ describe('CreateTaskUseCase', () => {
     (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([null, {}]);
     (mockValidateAssigneeIsMember.execute as jest.Mock).mockResolvedValue(false);
 
-    const result = await useCase.execute(projectId, userId, { title: 'Tarea', assigneeId: 'non-member-uuid' });
+    const result = await useCase.execute(projectId, userId, { title: 'Tarea', description: null, status: null, assigneeId: 'non-member-uuid' });
 
     expect(result.statusCode).toBe(HttpStatus.BAD_REQUEST);
     expect(result.ok).toBe(false);
@@ -87,7 +87,7 @@ describe('CreateTaskUseCase', () => {
     };
     (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([errorResponse, null]);
 
-    const result = await useCase.execute(projectId, 'stranger-uuid', { title: 'Tarea' });
+    const result = await useCase.execute(projectId, 'stranger-uuid', { title: 'Tarea', description: null, status: null, assigneeId: null });
 
     expect(result.statusCode).toBe(HttpStatus.NOT_FOUND);
     expect(result.ok).toBe(false);
@@ -105,7 +105,7 @@ describe('CreateTaskUseCase', () => {
     (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([null, {}]);
     (mockTasksService.save as jest.Mock).mockResolvedValue(savedTask);
 
-    const result = await useCase.execute(projectId, userId, { title: 'Tarea' });
+    const result = await useCase.execute(projectId, userId, { title: 'Tarea', description: null, status: null, assigneeId: null });
 
     expect(result.data).not.toHaveProperty('deletedAt');
   });

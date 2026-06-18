@@ -45,7 +45,12 @@ export class UpdateTaskUseCase {
         }
       }
 
-      task.update(dto);
+      task.update({
+        title: dto.title,
+        description: dto.description,
+        status: dto.status ?? undefined,
+        assigneeId: dto.assigneeId,
+      });
       const saved = await this.tasksService.save(task);
 
       return ApiResponse.create()

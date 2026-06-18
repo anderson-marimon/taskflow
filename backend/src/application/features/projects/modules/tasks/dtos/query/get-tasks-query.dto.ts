@@ -7,10 +7,10 @@ export class GetTasksQueryDto extends PaginatorDto {
   @ApiPropertyOptional({ description: 'Filtrar por estado de la tarea', enum: TaskStatus })
   @IsOptional()
   @IsEnum(TaskStatus)
-  status?: TaskStatus;
+  public status?: TaskStatus;
 
   @ApiPropertyOptional({ description: 'Filtrar por UUID del asignado', example: '550e8400-e29b-41d4-a716-446655440000' })
   @IsOptional()
   @IsUUID('4')
-  assigneeId?: string;
+  public assigneeId?: string;
 }
