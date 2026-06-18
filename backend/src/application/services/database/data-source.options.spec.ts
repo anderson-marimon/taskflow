@@ -33,4 +33,13 @@ describe('buildDataSourceOptions', () => {
     expect((options.migrations as string[]).length).toBeGreaterThan(0);
     expect(typeof (options.migrations as string[])[0]).toBe('string');
   });
+
+  it('incluye glob de entidades de features', () => {
+    const options = buildDataSourceOptions();
+    expect(Array.isArray(options.entities)).toBe(true);
+    expect((options.entities as string[]).length).toBeGreaterThan(0);
+    const globPattern = (options.entities as string[])[0];
+    expect(globPattern).toMatch(/features/);
+    expect(globPattern).toMatch(/\.entity\./);
+  });
 });
