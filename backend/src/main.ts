@@ -1,13 +1,16 @@
 import { DtoValidatorPipe } from '@common/pipes/dto-validator.pipe';
+import { DatabaseEnv } from '@environment/database.environment';
 import { ServerEnv } from '@environment/server.environment';
 import { Logger } from '@nestjs/common/services/logger.service';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from '@src/app.module';
 import helmet from 'helmet';
 
 async function bootstrap() {
   const logger = new Logger('Bootstrap');
   const env = ServerEnv.start();
+  DatabaseEnv.start();
 
   const port = env.PORT;
   const apiVersion = env.API_VERSION;
@@ -22,6 +25,10 @@ async function bootstrap() {
   server.enableCors({ origin, methods, allowedHeaders });
   server.setGlobalPrefix(apiVersion);
   server.useGlobalPipes(new DtoValidatorPipe());
+
+  const swaggerConfig = new DocumentBuilder().setTitle('Taskflow API').setVersion(apiVersion).addBearerAuth().build();
+  const swaggerDocument = SwaggerModule.createDocument(server, swaggerConfig);
+  SwaggerModule.setup('docs', server, swaggerDocument);
 
   await server.listen(port, () => {
     logger.debug(`Servidor iniciado en el puerto ${port}, versión de API ${apiVersion}`);

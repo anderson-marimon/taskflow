@@ -9,11 +9,6 @@ export class HashUtil {
     return bcrypt.hashSync(password, this.SALT_ROUNDS);
   }
 
-  /**
-   * Returns a deterministic SHA-256 hex digest of the given value.
-   * Use this to hash tokens before storing them at rest — the caller
-   * retains the raw token for email delivery; only the hash touches the DB.
-   */
   public static sha256(value: string): string {
     return createHash('sha256').update(value).digest('hex');
   }
@@ -45,7 +40,6 @@ export class HashUtil {
     const len = Math.max(length, PASSWORD_POLICY.minLength);
     const chars: string[] = [];
 
-    // Seed: guarantee at least one char from each required category
     for (let i = 0; i < PASSWORD_POLICY.minUppercase; i++) {
       chars.push(UPPER.charAt(randomInt(UPPER.length)));
     }
@@ -59,13 +53,11 @@ export class HashUtil {
       chars.push(SYMBOLS.charAt(randomInt(SYMBOLS.length)));
     }
 
-    // Fill remaining positions from the combined pool
     const remaining = len - chars.length;
     for (let i = 0; i < remaining; i++) {
       chars.push(ALL.charAt(randomInt(ALL.length)));
     }
 
-    // Fisher-Yates shuffle
     for (let i = chars.length - 1; i > 0; i--) {
       const j = randomInt(i + 1);
       [chars[i], chars[j]] = [chars[j], chars[i]];
