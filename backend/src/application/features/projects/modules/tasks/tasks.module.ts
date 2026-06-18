@@ -27,5 +27,6 @@ import { ProjectMembersService } from '@features/projects/services/project-membe
     ProjectsService,
     ProjectMembersService,
   ],
+  exports: [TasksService],
 })
 export class TasksModule {}
