@@ -25,8 +25,6 @@ export class VerifyProjectAccessSubquery {
           .withInternalCode(EInternalCode.NOT_FOUND)
           .withPrefix('PROJECTS')
           .withMessage('Proyecto no encontrado o sin acceso')
-          .withData(null)
-          .withErrors([])
           .build(),
         null,
       ];

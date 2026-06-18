@@ -42,7 +42,6 @@ export class CreateProjectUseCase {
         .withPrefix('PROJECTS')
         .withMessage('Proyecto creado exitosamente')
         .withData(saved)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);

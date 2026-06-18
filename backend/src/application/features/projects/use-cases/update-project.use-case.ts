@@ -29,7 +29,6 @@ export class UpdateProjectUseCase {
         .withPrefix('PROJECTS')
         .withMessage('Proyecto actualizado exitosamente')
         .withData(saved)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);

@@ -29,8 +29,6 @@ export class AddMemberUseCase {
           .withInternalCode(EInternalCode.FORBIDDEN)
           .withPrefix('PROJECTS')
           .withMessage('Solo el propietario puede agregar miembros al proyecto')
-          .withData(null)
-          .withErrors([])
           .build();
       }
 
@@ -42,8 +40,6 @@ export class AddMemberUseCase {
           .withInternalCode(EInternalCode.USER_NOT_FOUND)
           .withPrefix('PROJECTS')
           .withMessage('El usuario objetivo no existe')
-          .withData(null)
-          .withErrors([])
           .build();
       }
 
@@ -55,8 +51,6 @@ export class AddMemberUseCase {
           .withInternalCode(EInternalCode.CONFLICT)
           .withPrefix('PROJECTS')
           .withMessage('El usuario ya es miembro del proyecto')
-          .withData(null)
-          .withErrors([])
           .build();
       }
 
@@ -74,7 +68,6 @@ export class AddMemberUseCase {
         .withPrefix('PROJECTS')
         .withMessage('Miembro agregado exitosamente')
         .withData(saved)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);

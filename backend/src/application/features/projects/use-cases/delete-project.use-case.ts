@@ -25,8 +25,6 @@ export class DeleteProjectUseCase {
           .withInternalCode(EInternalCode.FORBIDDEN)
           .withPrefix('PROJECTS')
           .withMessage('Solo el propietario puede eliminar el proyecto')
-          .withData(null)
-          .withErrors([])
           .build();
       }
 
@@ -39,7 +37,6 @@ export class DeleteProjectUseCase {
         .withPrefix('PROJECTS')
         .withMessage('Proyecto eliminado exitosamente')
         .withData(deleted)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);

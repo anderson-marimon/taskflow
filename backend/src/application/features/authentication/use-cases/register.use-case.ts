@@ -25,7 +25,6 @@ export class RegisterUseCase {
         .withInternalCode(EInternalCode.DUPLICATE_KEY_ERROR)
         .withPrefix('AUTH')
         .withMessage('El email ya está registrado')
-        .withData(null)
         .withErrors(errors)
         .build();
     }
@@ -42,7 +41,6 @@ export class RegisterUseCase {
       .withPrefix('AUTH')
       .withMessage('Usuario registrado exitosamente')
       .withData(saved)
-      .withErrors([])
       .build();
   }
 }
