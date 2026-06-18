@@ -7,13 +7,13 @@ export class CreateTaskDto {
   @ApiProperty({ description: 'Título de la tarea', example: 'Arreglar bug de autenticación' })
   @IsString({ message: 'El título debe ser una cadena de texto' })
   @IsNotEmpty({ message: 'El título es requerido' })
-  @Transform(({ value }) => value?.trim())
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   public title: string;
 
   @ApiProperty({ description: 'Descripción de la tarea', example: 'Descripción detallada del trabajo a realizar', nullable: true })
   @ValidateIf((_, value) => value !== null)
   @IsString({ message: 'La descripción debe ser una cadena de texto' })
-  @Transform(({ value }) => value?.trim())
+  @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   public description: Nullable<string>;
 
   @ApiProperty({ description: 'Estado inicial de la tarea', enum: TaskStatus, nullable: true })

@@ -10,7 +10,7 @@ export class RegisterDto {
   public name: string;
 
   @ApiProperty({ example: 'ada@example.com' })
-  @Transform(({ value }) => value?.toLowerCase().trim())
+  @Transform(({ value }) => (typeof value === 'string' ? value.toLowerCase().trim() : value))
   @IsEmail({}, { message: 'El email debe ser un correo electrónico válido' })
   public email: string;
 
