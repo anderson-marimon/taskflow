@@ -2,20 +2,20 @@
 
 Aplicación de gestión de tareas colaborativa: equipos crean proyectos, agregan tareas con estados y asignaciones, y consultan el estado del trabajo.
 
-Este documento responde técnicamente a la prueba: decisiones de arquitectura, modelado, seguridad y —en particular— la estrategia de caché. Para levantar el proyecto y ver comandos/estructura, ir al [README del backend](./backend/README.md).
+Este documento responde técnicamente a las  decisiones de arquitectura, modelado, seguridad y —en particular— la estrategia de caché. Para levantar el proyecto y ver comandos/estructura, ir al [README del backend](./backend/README.md).
 
 ## Estructura del repositorio
 
 ```
 taskflow/
 ├── backend/            API REST (NestJS + TypeORM + PostgreSQL)   ← implementado
-├── frontend/           Interfaz web (Next.js)                      ← pendiente
+├── frontend/           Interfaz web (No definido aún)                        ← no implementada a tiempo
 └── docker-compose.yml  Postgres local
 ```
 
 ## Stack
 
-Se usó el stack recomendado por la prueba: **NestJS + TypeORM + PostgreSQL** en el backend y **Next.js** en el frontend. La única desviación deliberada es la estrategia de caché (in-memory en vez de Redis), justificada más abajo.
+Se usó el stack recomendado por la prueba: **NestJS + TypeORM + PostgreSQL** en el backend y **Posiblemente Vite React** en el frontend por resolución del PRD. la estrategia de caché (in-memory en vez de Redis), justificada más abajo.
 
 ---
 
@@ -93,12 +93,12 @@ Además de los tests, cada slice se validó manualmente contra Postgres real (re
 ## Uso de IA
 
 - **Herramienta**: Claude Code (Anthropic).
-- **Para qué se usó**: implementación del backend siguiendo un flujo *spec-driven* (propuesta → especificación → diseño → tareas → implementación → verificación) por cada historia de usuario, generación de la suite de tests unitarios, y scaffolding de la estructura y las migraciones.
+- **Para qué se usó**: implementación del backend siguiendo un flujo *spec-driven* (propuesta → especificación → diseño → tareas → implementación → verificación) por cada historia de usuario, generación de la suite de tests unitarios, y scaffolding de la estructura y las migraciones TDD.
 - **Qué se modificó, descartó o corrigió, y por qué**: la dirección técnica y todas las decisiones fueron del desarrollador, que revisó y corrigió el output de forma iterativa. Entre otras:
   - Se **normalizaron los DTOs** al patrón propio (propiedades `public`, `Nullable<T>` + `@ValidateIf` en los create, `PartialType` en los update, `?` solo en query): la IA los había generado con un estilo distinto.
   - Se **rechazó un bug** que la IA/un cambio introdujo en la expiración del JWT (`Number('24h')` da `NaN` y rompe el firmado); se corrigió manteniendo el string de duración con un tipo preciso en lugar de `any`.
   - Se **eliminaron casts poco seguros** (`as any`, `as unknown as`) en favor de tipos correctos o mapeo explícito de campos.
-  - Se **establecieron y aplicaron convenciones**: sin comentarios en el código (documentación en Swagger), tests en español, imports por alias, tipos globales `Nullable`/`Maybe`, todo endpoint a través de un caso de uso, y respuesta uniforme con valores por defecto.
+  - Se **establecieron y aplicaron convenciones**:(documentación en Swagger), tests, imports por alias, tipos globales `Nullable`/`Maybe`, todo endpoint a través de un caso de uso, y respuesta uniforme con valores por defecto.
   - Cada slice se cerró con una **revisión adversarial y un smoke manual** contra la base real, no solo con los tests unitarios (que, por ejemplo, no detectaban un fallo de validación que sí apareció al ejercitar el endpoint).
 
 ---
