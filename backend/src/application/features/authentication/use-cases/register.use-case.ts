@@ -6,8 +6,7 @@ import { EInternalCode } from '@tools/internal-codes';
 import { UserEntityBuilder } from '@features/authentication/entities/user.entity.builder';
 import { ValidateRegisterSubquery } from '@features/authentication/subqueries/validate-register.subquery';
 import { UsersService } from '@features/authentication/services/users.service';
-
-export type RegisterDto = { name: string; email: string; password: string };
+import { RegisterDto } from '@features/authentication/dtos/body/register.dto';
 
 @Injectable()
 export class RegisterUseCase {
