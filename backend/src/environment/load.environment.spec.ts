@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { _resetForTest, loadEnv } from './load-env';
+import { _resetForTest, loadEnv } from './load.environment';
 
 jest.mock('dotenv', () => ({
   config: jest.fn(),

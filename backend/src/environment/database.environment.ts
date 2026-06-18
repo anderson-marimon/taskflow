@@ -1,6 +1,6 @@
 import { Logger } from '@nestjs/common';
 import * as joi from 'joi';
-import { loadEnv } from '@environment/load-env';
+import { loadEnv } from '@environment/load.environment';
 
 type DatabaseEnvironment = {
   DATABASE_URL: string;
