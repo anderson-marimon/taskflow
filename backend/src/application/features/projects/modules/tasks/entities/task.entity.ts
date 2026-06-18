@@ -21,7 +21,7 @@ export class Task extends EntityBase<Task> {
   @Column({ type: 'varchar', nullable: true })
   description: Nullable<string>;
 
-  @Column({ type: 'enum', enum: TaskStatus, default: TaskStatus.PENDING })
+  @Column({ type: 'enum', enum: TaskStatus, enumName: 'task_status', default: TaskStatus.PENDING })
   status: TaskStatus;
 
   @Column({ type: 'uuid', name: 'assignee_id', nullable: true })
