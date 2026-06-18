@@ -17,7 +17,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:generate": "npm run build && node ./node_modules/typeorm/cli.js migration:generate -d dist/application/services/database/data-source.js",
+    "migration:run": "npm run build && node ./node_modules/typeorm/cli.js migration:run -d dist/application/services/database/data-source.js",
+    "migration:revert": "npm run build && node ./node_modules/typeorm/cli.js migration:revert -d dist/application/services/database/data-source.js",
+    "migration:create": "node ./node_modules/typeorm/cli.js migration:create"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -27,11 +31,14 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "helmet": "^8.2.0",
+    "@nestjs/typeorm": "^11.0.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
     "joi": "^18.2.3",
     "pg": "^8.21.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "typeorm": "^1.0.0"
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -39,6 +46,7 @@
     "@nestjs/cli": "^11.0.0",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.1",
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",
@@ -73,6 +81,16 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@features/(.*)$": "<rootDir>/application/features/$1",
+      "^@common/(.*)$": "<rootDir>/application/common/$1",
+      "^@guards/(.*)$": "<rootDir>/application/guards/$1",
+      "^@decorators/(.*)$": "<rootDir>/application/decorators/$1",
+      "^@services/(.*)$": "<rootDir>/application/services/$1",
+      "^@environment/(.*)$": "<rootDir>/environment/$1",
+      "^@tools/(.*)$": "<rootDir>/tools/$1",
+      "^@src/(.*)$": "<rootDir>/application/$1"
+    }
   }
 }
