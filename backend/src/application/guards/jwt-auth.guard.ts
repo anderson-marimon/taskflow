@@ -20,7 +20,7 @@ export class JwtAuthGuard implements CanActivate {
     if (isPublic) return true;
 
     const request = ctx.switchToHttp().getRequest();
-    const authHeader: string | undefined = request.headers?.authorization;
+    const authHeader: Maybe<string> = request.headers?.authorization;
     const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : undefined;
 
     if (!token) {
