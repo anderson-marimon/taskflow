@@ -1,3 +1,3 @@
-export const optional = <T>(value: T | null): T | undefined => {
+export const optional = <T>(value: Nullable<T>): Maybe<T> => {
   return value === null ? undefined : value;
 };

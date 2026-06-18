@@ -1,4 +1,4 @@
-import { DatabaseEnv } from './database.environment';
+import { DatabaseEnv } from '@environment/database.environment';
 
 jest.mock('@environment/load.environment', () => ({
   loadEnv: jest.fn(),

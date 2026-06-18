@@ -9,5 +9,6 @@ export function buildDataSourceOptions(): PostgresConnectionOptions {
     synchronize: false,
     logging: false,
     migrations: [join(__dirname, 'migrations', '*.{ts,js}')],
+    entities: [join(__dirname, '..', '..', 'features', '**', '*.entity.{ts,js}')],
   };
 }
