@@ -25,8 +25,10 @@ export class TaskEntityBuilder {
     return this;
   }
 
-  public withStatus(status: TaskStatus): TaskEntityBuilder {
-    this.task.status = status;
+  public withStatus(status: Nullable<TaskStatus>): TaskEntityBuilder {
+    if (status != null) {
+      this.task.status = status;
+    }
     return this;
   }
 

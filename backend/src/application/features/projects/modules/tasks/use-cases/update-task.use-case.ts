@@ -6,6 +6,7 @@ import { EInternalCode } from '@tools/internal-codes';
 import { VerifyProjectAccessSubquery } from '@features/projects/subqueries/verify-project-access.subquery';
 import { ValidateAssigneeIsMemberSubquery } from '@features/projects/modules/tasks/subqueries/validate-assignee-is-member.subquery';
 import { TasksService } from '@features/projects/modules/tasks/services/tasks.service';
+import { Task } from '@features/projects/modules/tasks/entities/task.entity';
 import { UpdateTaskDto } from '@features/projects/modules/tasks/dtos/body/update-task.dto';
 
 @Injectable()
@@ -45,7 +46,7 @@ export class UpdateTaskUseCase {
         }
       }
 
-      task.update(dto);
+      task.update(dto as unknown as Partial<Task>);
       const saved = await this.tasksService.save(task);
 
       return ApiResponse.create()

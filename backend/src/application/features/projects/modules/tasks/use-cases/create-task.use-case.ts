@@ -39,6 +39,7 @@ export class CreateTaskUseCase {
         .withProjectId(projectId)
         .withTitle(dto.title)
         .withDescription(dto.description ?? null)
+        .withStatus(dto.status ?? null)
         .withAssigneeId(dto.assigneeId ?? null)
         .build();
 
