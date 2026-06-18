@@ -3,10 +3,6 @@ import { ArgumentMetadata, HttpException, HttpStatus } from '@nestjs/common';
 import { IsNotEmpty, IsString } from 'class-validator';
 import 'reflect-metadata';
 
-/**
- * Minimal DTO used only within this spec.
- * Only `name` is decorated — any other property is undeclared.
- */
 class StubDto {
   @IsString({ message: 'name must be a string' })
   @IsNotEmpty({ message: 'name must not be empty' })

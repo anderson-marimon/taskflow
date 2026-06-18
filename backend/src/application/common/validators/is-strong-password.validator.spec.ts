@@ -74,8 +74,6 @@ describe('@IsStrongPassword decorator', () => {
       expect(errors.length).toBeGreaterThan(0);
     });
 
-    // A spaces-only string satisfies IsString and IsNotEmpty (it has 8+ chars)
-    // but fails IsStrongPassword (no uppercase, no digit, no symbol, no lowercase letter).
     it('rechaza una contraseña compuesta solo de espacios (PP-R2-S8)', async () => {
       const errors = await getPasswordErrors('        ');
       expect(errors.length).toBeGreaterThan(0);
