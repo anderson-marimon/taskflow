@@ -1,3 +1,4 @@
+import { loadEnv } from '@environment/load.environment';
 import { Logger } from '@nestjs/common';
 import * as joi from 'joi';
 
@@ -21,6 +22,8 @@ export class ServerEnv {
 
   public static start(): ServerEnv {
     if (this.instance) return this.instance;
+
+    loadEnv();
 
     const schema = joi
       .object<ServerEnvironment>({
