@@ -1,15 +1,15 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { Public } from '@decorators/public.decorator';
 import { CurrentUser, JwtPayload } from '@decorators/jwt-payload.decorator';
 import type { TJwtPayload } from '@services/auth/session-store.port';
-import { RegisterDto } from './dtos/body/register.dto';
-import { LoginDto } from './dtos/body/login.dto';
-import { RegisterUseCase } from './use-cases/register.use-case';
-import { LoginUseCase } from './use-cases/login.use-case';
-import { LogoutUseCase } from './use-cases/logout.use-case';
-import { UsersService } from './services/users.service';
+import { RegisterDto } from '@features/authentication/dtos/body/register.dto';
+import { LoginDto } from '@features/authentication/dtos/body/login.dto';
+import { RegisterUseCase } from '@features/authentication/use-cases/register.use-case';
+import { LoginUseCase } from '@features/authentication/use-cases/login.use-case';
+import { LogoutUseCase } from '@features/authentication/use-cases/logout.use-case';
+import { GetProfileUseCase } from '@features/authentication/use-cases/get-profile.use-case';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -18,7 +18,7 @@ export class AuthenticationController {
     private readonly registerUseCase: RegisterUseCase,
     private readonly loginUseCase: LoginUseCase,
     private readonly logoutUseCase: LogoutUseCase,
-    private readonly usersService: UsersService,
+    private readonly getProfileUseCase: GetProfileUseCase,
   ) {}
 
   @Public()
@@ -53,13 +53,12 @@ export class AuthenticationController {
   }
 
   @ApiBearerAuth()
-  @Post('me')
+  @Get('me')
   @ApiOperation({ summary: 'Obtener datos del usuario autenticado' })
   @ApiResponse({ status: 200, description: 'Datos del usuario autenticado' })
   @ApiResponse({ status: 401, description: 'Token inválido o sesión inactiva' })
   async me(@CurrentUser() userId: string, @Res() res: Response) {
-    const user = await this.usersService.findById(userId);
-    if (user) user.prune(['passwordHash']);
-    res.status(200).json(user);
+    const result = await this.getProfileUseCase.execute(userId);
+    res.status(result.statusCode).json(result);
   }
 }

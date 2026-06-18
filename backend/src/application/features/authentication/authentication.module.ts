@@ -6,16 +6,17 @@ import { AuthEnv } from '@environment/auth.environment';
 import { DbSessionStore } from '@services/auth/db-session-store';
 import { SESSION_STORE } from '@services/auth/session-store.port';
 import { JwtAuthGuard } from '@guards/jwt-auth.guard';
-import { User } from './entities/user.entity';
-import { Session } from './entities/session.entity';
-import { UsersService } from './services/users.service';
-import { SessionsService } from './services/sessions.service';
-import { ValidateRegisterSubquery } from './subqueries/validate-register.subquery';
-import { FindUserByEmailSubquery } from './subqueries/find-user-by-email.subquery';
-import { RegisterUseCase } from './use-cases/register.use-case';
-import { LoginUseCase } from './use-cases/login.use-case';
-import { LogoutUseCase } from './use-cases/logout.use-case';
-import { AuthenticationController } from './authentication.controller';
+import { User } from '@features/authentication/entities/user.entity';
+import { Session } from '@features/authentication/entities/session.entity';
+import { UsersService } from '@features/authentication/services/users.service';
+import { SessionsService } from '@features/authentication/services/sessions.service';
+import { ValidateRegisterSubquery } from '@features/authentication/subqueries/validate-register.subquery';
+import { FindUserByEmailSubquery } from '@features/authentication/subqueries/find-user-by-email.subquery';
+import { RegisterUseCase } from '@features/authentication/use-cases/register.use-case';
+import { LoginUseCase } from '@features/authentication/use-cases/login.use-case';
+import { LogoutUseCase } from '@features/authentication/use-cases/logout.use-case';
+import { GetProfileUseCase } from '@features/authentication/use-cases/get-profile.use-case';
+import { AuthenticationController } from '@features/authentication/authentication.controller';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthenticationController } from './authentication.controller';
     RegisterUseCase,
     LoginUseCase,
     LogoutUseCase,
+    GetProfileUseCase,
     ValidateRegisterSubquery,
     FindUserByEmailSubquery,
     UsersService,
