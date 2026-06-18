@@ -1,9 +1,9 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import type { Response } from 'express';
 import { Public } from '@decorators/public.decorator';
 import { CurrentUser, JwtPayload } from '@decorators/jwt-payload.decorator';
-import { TJwtPayload } from '@services/auth/session-store.port';
+import type { TJwtPayload } from '@services/auth/session-store.port';
 import { RegisterDto } from './dtos/body/register.dto';
 import { LoginDto } from './dtos/body/login.dto';
 import { RegisterUseCase } from './use-cases/register.use-case';

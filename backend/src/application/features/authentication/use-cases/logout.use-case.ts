@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common';
 import { ApiResponse, TApiResponse } from '@common/builders/server-response.builder';
-import { SESSION_STORE, SessionStore } from '@services/auth/session-store.port';
+import { SESSION_STORE } from '@services/auth/session-store.port';
+import type { SessionStore } from '@services/auth/session-store.port';
 import { EInternalCode } from '@tools/internal-codes';
 
 @Injectable()

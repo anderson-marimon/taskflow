@@ -4,7 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 import { randomUUID } from 'crypto';
 import { ApiResponse, TApiResponse } from '@common/builders/server-response.builder';
 import { HashUtil } from '@common/utils/hash.util';
-import { SESSION_STORE, SessionStore } from '@services/auth/session-store.port';
+import { SESSION_STORE } from '@services/auth/session-store.port';
+import type { SessionStore } from '@services/auth/session-store.port';
 import { EInternalCode } from '@tools/internal-codes';
 import { FindUserByEmailSubquery } from '../subqueries/find-user-by-email.subquery';
 

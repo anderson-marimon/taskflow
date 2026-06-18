@@ -24,7 +24,7 @@ import { AuthenticationController } from './authentication.controller';
       global: true,
       useFactory: () => ({
         secret: AuthEnv.get().JWT_SECRET,
-        signOptions: { expiresIn: AuthEnv.get().JWT_EXPIRES_IN },
+        signOptions: { expiresIn: AuthEnv.get().JWT_EXPIRES_IN as any },
       }),
     }),
   ],

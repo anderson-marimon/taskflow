@@ -2,7 +2,8 @@ import { CanActivate, ExecutionContext, HttpException, HttpStatus, Inject, Injec
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { ApiResponse } from '@common/builders/server-response.builder';
-import { SESSION_STORE, SessionStore, TJwtPayload } from '@services/auth/session-store.port';
+import { SESSION_STORE } from '@services/auth/session-store.port';
+import type { SessionStore, TJwtPayload } from '@services/auth/session-store.port';
 import { IS_PUBLIC_KEY } from '@decorators/public.decorator';
 import { EInternalCode } from '@tools/internal-codes';
 
