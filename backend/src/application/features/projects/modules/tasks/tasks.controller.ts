@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, Res } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { CurrentUser } from '@decorators/jwt-payload.decorator';
 import { ProjectParamDto } from '@features/projects/dtos/params/project-param.dto';
@@ -10,6 +10,8 @@ import { GetTasksQueryDto } from '@features/projects/modules/tasks/dtos/query/ge
 import { CreateTaskUseCase } from '@features/projects/modules/tasks/use-cases/create-task.use-case';
 import { ListTasksUseCase } from '@features/projects/modules/tasks/use-cases/list-tasks.use-case';
 import { UpdateTaskUseCase } from '@features/projects/modules/tasks/use-cases/update-task.use-case';
+import { ApiEnvelopeResponse } from '@common/decorators/api-envelope-response.decorator';
+import { TaskResponseDto } from '@features/projects/modules/tasks/dtos/response/task-response.dto';
 
 @ApiTags('Tasks')
 @ApiBearerAuth()
@@ -23,10 +25,10 @@ export class TasksController {
 
   @Post()
   @ApiOperation({ summary: 'Crear una nueva tarea en el proyecto' })
-  @ApiResponse({ status: 201, description: 'Tarea creada exitosamente' })
-  @ApiResponse({ status: 400, description: 'Asignado no es miembro del proyecto o datos inválidos' })
-  @ApiResponse({ status: 404, description: 'Proyecto no encontrado o sin acceso' })
-  @ApiResponse({ status: 500, description: 'Error inesperado del servidor' })
+  @ApiEnvelopeResponse(201, 'Tarea creada exitosamente', TaskResponseDto)
+  @ApiEnvelopeResponse(401, 'Token inválido o sesión inactiva')
+  @ApiEnvelopeResponse(404, 'Proyecto no encontrado o sin acceso')
+  @ApiEnvelopeResponse(406, 'Asignado no es miembro del proyecto o datos inválidos')
   async create(
     @Param() param: ProjectParamDto,
     @CurrentUser() userId: string,
@@ -39,10 +41,9 @@ export class TasksController {
 
   @Get()
   @ApiOperation({ summary: 'Listar tareas del proyecto con paginación' })
-  @ApiResponse({ status: 200, description: 'Lista paginada de tareas' })
-  @ApiResponse({ status: 400, description: 'Parámetros de paginación inválidos' })
-  @ApiResponse({ status: 404, description: 'Proyecto no encontrado o sin acceso' })
-  @ApiResponse({ status: 500, description: 'Error inesperado del servidor' })
+  @ApiEnvelopeResponse(200, 'Lista paginada de tareas', TaskResponseDto, { paginated: true })
+  @ApiEnvelopeResponse(401, 'Token inválido o sesión inactiva')
+  @ApiEnvelopeResponse(404, 'Proyecto no encontrado o sin acceso')
   async list(
     @Param() param: ProjectParamDto,
     @CurrentUser() userId: string,
@@ -55,10 +56,10 @@ export class TasksController {
 
   @Patch(':taskId')
   @ApiOperation({ summary: 'Actualizar una tarea del proyecto' })
-  @ApiResponse({ status: 200, description: 'Tarea actualizada exitosamente' })
-  @ApiResponse({ status: 400, description: 'Asignado no es miembro del proyecto o datos inválidos' })
-  @ApiResponse({ status: 404, description: 'Proyecto o tarea no encontrada o sin acceso' })
-  @ApiResponse({ status: 500, description: 'Error inesperado del servidor' })
+  @ApiEnvelopeResponse(200, 'Tarea actualizada exitosamente', TaskResponseDto)
+  @ApiEnvelopeResponse(401, 'Token inválido o sesión inactiva')
+  @ApiEnvelopeResponse(404, 'Proyecto o tarea no encontrada o sin acceso')
+  @ApiEnvelopeResponse(406, 'Asignado no es miembro del proyecto o datos inválidos')
   async update(
     @Param() param: TaskParamsDto,
     @CurrentUser() userId: string,
