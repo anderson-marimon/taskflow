@@ -28,7 +28,7 @@ export class TasksService {
     completed: string;
     inProgress: string;
     pending: string;
-    avgResolution: string | null;
+    avgResolution: Nullable<string>;
   }> {
     const raw = await this.repo
       .createQueryBuilder('task')
@@ -49,6 +49,6 @@ export class TasksService {
         pending: TaskStatus.PENDING,
       })
       .getRawOne();
-    return raw as { total: string; completed: string; inProgress: string; pending: string; avgResolution: string | null };
+    return raw as { total: string; completed: string; inProgress: string; pending: string; avgResolution: Nullable<string> };
   }
 }
