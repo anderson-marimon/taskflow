@@ -17,8 +17,6 @@ const INVALID_CREDENTIALS_RESPONSE = (): TApiResponse =>
     .withInternalCode(EInternalCode.UNAUTHORIZED)
     .withPrefix('AUTH')
     .withMessage('Credenciales inválidas')
-    .withData(null)
-    .withErrors([])
     .build();
 
 @Injectable()
@@ -48,7 +46,6 @@ export class LoginUseCase {
       .withPrefix('AUTH')
       .withMessage('Inicio de sesión exitoso')
       .withData({ accessToken })
-      .withErrors([])
       .build();
   }
 }

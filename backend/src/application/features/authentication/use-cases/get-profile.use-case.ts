@@ -20,8 +20,6 @@ export class GetProfileUseCase {
           .withInternalCode(EInternalCode.USER_NOT_FOUND)
           .withPrefix('AUTH')
           .withMessage('Usuario no encontrado')
-          .withData(null)
-          .withErrors([])
           .build();
       }
 
@@ -34,7 +32,6 @@ export class GetProfileUseCase {
         .withPrefix('AUTH')
         .withMessage('Datos del usuario autenticado')
         .withData(user)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);

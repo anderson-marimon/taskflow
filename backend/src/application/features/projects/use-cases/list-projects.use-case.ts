@@ -40,7 +40,6 @@ export class ListProjectsUseCase {
         .withPrefix('PROJECTS')
         .withMessage('Proyectos obtenidos exitosamente')
         .withData(pagination)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);

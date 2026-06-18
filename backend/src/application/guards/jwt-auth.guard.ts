@@ -31,8 +31,6 @@ export class JwtAuthGuard implements CanActivate {
           .withInternalCode(EInternalCode.TOKEN_MISSING)
           .withPrefix('AUTH')
           .withMessage('Token no proporcionado')
-          .withData(null)
-          .withErrors([])
           .build(),
         HttpStatus.UNAUTHORIZED,
       );
@@ -50,8 +48,6 @@ export class JwtAuthGuard implements CanActivate {
           .withInternalCode(isExpired ? EInternalCode.TOKEN_EXPIRED : EInternalCode.TOKEN_INVALID)
           .withPrefix('AUTH')
           .withMessage(isExpired ? 'Token expirado' : 'Token inválido')
-          .withData(null)
-          .withErrors([])
           .build(),
         HttpStatus.UNAUTHORIZED,
       );
@@ -66,8 +62,6 @@ export class JwtAuthGuard implements CanActivate {
           .withInternalCode(EInternalCode.SESSION_REVOKED)
           .withPrefix('AUTH')
           .withMessage('Sesión revocada o inactiva')
-          .withData(null)
-          .withErrors([])
           .build(),
         HttpStatus.UNAUTHORIZED,
       );

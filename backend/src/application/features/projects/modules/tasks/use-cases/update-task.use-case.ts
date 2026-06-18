@@ -29,8 +29,6 @@ export class UpdateTaskUseCase {
           .withInternalCode(EInternalCode.NOT_FOUND)
           .withPrefix('TASKS')
           .withMessage('Tarea no encontrada en el proyecto')
-          .withData(null)
-          .withErrors([])
           .build();
       }
 
@@ -43,8 +41,6 @@ export class UpdateTaskUseCase {
             .withInternalCode(EInternalCode.BAD_REQUEST)
             .withPrefix('TASKS')
             .withMessage('El nuevo asignado no es miembro del proyecto')
-            .withData(null)
-            .withErrors([])
             .build();
         }
       }
@@ -59,7 +55,6 @@ export class UpdateTaskUseCase {
         .withPrefix('TASKS')
         .withMessage('Tarea actualizada exitosamente')
         .withData(saved)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);

@@ -13,7 +13,7 @@ export type TApiResponse<TData = any> = {
 };
 
 export class ApiResponse {
-  private apiResponse: Partial<TApiResponse> = {};
+  private apiResponse: Partial<TApiResponse> = { data: null, errors: [] };
 
   public static create() {
     return new ApiResponse();

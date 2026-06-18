@@ -17,8 +17,6 @@ export class LogoutUseCase {
       .withInternalCode(EInternalCode.OK)
       .withPrefix('AUTH')
       .withMessage('Sesión cerrada exitosamente')
-      .withData(null)
-      .withErrors([])
       .build();
   }
 }

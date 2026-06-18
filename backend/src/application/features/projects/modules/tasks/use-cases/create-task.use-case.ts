@@ -31,8 +31,6 @@ export class CreateTaskUseCase {
             .withInternalCode(EInternalCode.BAD_REQUEST)
             .withPrefix('TASKS')
             .withMessage('El asignado no es miembro del proyecto')
-            .withData(null)
-            .withErrors([])
             .build();
         }
       }
@@ -54,7 +52,6 @@ export class CreateTaskUseCase {
         .withPrefix('TASKS')
         .withMessage('Tarea creada exitosamente')
         .withData(saved)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);

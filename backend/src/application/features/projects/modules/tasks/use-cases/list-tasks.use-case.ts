@@ -45,7 +45,6 @@ export class ListTasksUseCase {
         .withPrefix('TASKS')
         .withMessage('Tareas obtenidas exitosamente')
         .withData(pagination)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);

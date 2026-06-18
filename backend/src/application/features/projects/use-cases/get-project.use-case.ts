@@ -21,7 +21,6 @@ export class GetProjectUseCase {
         .withPrefix('PROJECTS')
         .withMessage('Proyecto obtenido exitosamente')
         .withData(project)
-        .withErrors([])
         .build();
     } catch (error) {
       return InternalError(error);
