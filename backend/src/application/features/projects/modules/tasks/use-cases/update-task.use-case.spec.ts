@@ -110,4 +110,41 @@ describe('UpdateTaskUseCase', () => {
     expect(result.statusCode).toBe(HttpStatus.NOT_FOUND);
     expect(result.ok).toBe(false);
   });
+
+  it('transición a COMPLETED establece completedAt con timestamp actual', async () => {
+    const task = Object.assign(new Task(), { taskId, projectId, title: 'Tarea', status: TaskStatus.PENDING, completedAt: null });
+    (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([null, {}]);
+    (mockTasksService.findByTaskId as jest.Mock).mockResolvedValue(task);
+    (mockTasksService.save as jest.Mock).mockResolvedValue(task);
+
+    await useCase.execute(projectId, taskId, userId, { status: TaskStatus.COMPLETED });
+
+    const saved = (mockTasksService.save as jest.Mock).mock.calls[0][0] as Task;
+    expect(saved.completedAt).toBeInstanceOf(Date);
+  });
+
+  it('salida de COMPLETED a PENDING establece completedAt en null', async () => {
+    const task = Object.assign(new Task(), { taskId, projectId, title: 'Tarea', status: TaskStatus.COMPLETED, completedAt: new Date() });
+    (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([null, {}]);
+    (mockTasksService.findByTaskId as jest.Mock).mockResolvedValue(task);
+    (mockTasksService.save as jest.Mock).mockResolvedValue(task);
+
+    await useCase.execute(projectId, taskId, userId, { status: TaskStatus.PENDING });
+
+    const saved = (mockTasksService.save as jest.Mock).mock.calls[0][0] as Task;
+    expect(saved.completedAt).toBeNull();
+  });
+
+  it('cambio de campo sin modificar status no altera completedAt', async () => {
+    const originalDate = new Date('2026-01-01T00:00:00Z');
+    const task = Object.assign(new Task(), { taskId, projectId, title: 'Tarea', status: TaskStatus.COMPLETED, completedAt: originalDate });
+    (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([null, {}]);
+    (mockTasksService.findByTaskId as jest.Mock).mockResolvedValue(task);
+    (mockTasksService.save as jest.Mock).mockResolvedValue(task);
+
+    await useCase.execute(projectId, taskId, userId, { title: 'Nuevo título' });
+
+    const saved = (mockTasksService.save as jest.Mock).mock.calls[0][0] as Task;
+    expect(saved.completedAt).toBe(originalDate);
+  });
 });

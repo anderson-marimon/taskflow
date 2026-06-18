@@ -25,7 +25,10 @@ export class Task extends EntityBase<Task> {
   status: TaskStatus;
 
   @Column({ type: 'uuid', name: 'assignee_id', nullable: true })
-  assigneeId: Nullable<string>;
+  public assigneeId: Nullable<string>;
+
+  @Column({ name: 'completed_at', type: 'timestamptz', nullable: true })
+  public completedAt: Nullable<Date>;
 
   @ManyToOne(() => User, { createForeignKeyConstraints: false })
   @JoinColumn({ name: 'assignee_id' })

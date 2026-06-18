@@ -7,6 +7,7 @@ import { VerifyProjectAccessSubquery } from '@features/projects/subqueries/verif
 import { ValidateAssigneeIsMemberSubquery } from '@features/projects/modules/tasks/subqueries/validate-assignee-is-member.subquery';
 import { TasksService } from '@features/projects/modules/tasks/services/tasks.service';
 import { UpdateTaskDto } from '@features/projects/modules/tasks/dtos/body/update-task.dto';
+import { TaskStatus } from '@features/projects/enums/task-status.enum';
 
 @Injectable()
 export class UpdateTaskUseCase {
@@ -45,12 +46,19 @@ export class UpdateTaskUseCase {
         }
       }
 
+      const wasCompleted = task.status === TaskStatus.COMPLETED;
+
       task.update({
         title: dto.title,
         description: dto.description,
         status: dto.status ?? undefined,
         assigneeId: dto.assigneeId,
       });
+
+      const isCompleted = task.status === TaskStatus.COMPLETED;
+      if (!wasCompleted && isCompleted) task.completedAt = new Date();
+      else if (wasCompleted && !isCompleted) task.completedAt = null;
+
       const saved = await this.tasksService.save(task);
 
       return ApiResponse.create()

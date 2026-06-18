@@ -4,6 +4,7 @@ import { Task } from '@features/projects/modules/tasks/entities/task.entity';
 export class TaskEntityBuilder {
   private readonly task: Partial<Task> = {
     status: TaskStatus.PENDING,
+    completedAt: null,
   };
 
   public static create(): TaskEntityBuilder {
@@ -34,6 +35,11 @@ export class TaskEntityBuilder {
 
   public withAssigneeId(assigneeId: Nullable<string>): TaskEntityBuilder {
     this.task.assigneeId = assigneeId;
+    return this;
+  }
+
+  public withCompletedAt(date: Nullable<Date>): TaskEntityBuilder {
+    this.task.completedAt = date;
     return this;
   }
 
