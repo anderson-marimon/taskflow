@@ -22,34 +22,34 @@ describe('DtoValidatorPipe', () => {
 
   const meta: ArgumentMetadata = { metatype: StubDto, type: 'body', data: '' };
 
-  describe('stripping undeclared properties (mass-assignment hardening)', () => {
-    it('strips an extra property not declared on the DTO', async () => {
+  describe('eliminación de propiedades no declaradas (mass-assignment hardening)', () => {
+    it('elimina una propiedad extra no declarada en el DTO', async () => {
       const result = await pipe.transform({ name: 'Alice', hacker: 'evil' }, meta);
 
       expect(result).not.toHaveProperty('hacker');
     });
 
-    it('preserves declared properties', async () => {
+    it('preserva las propiedades declaradas', async () => {
       const result = await pipe.transform({ name: 'Alice', hacker: 'evil' }, meta);
 
       expect(result).toHaveProperty('name', 'Alice');
     });
   });
 
-  describe('valid input (declared fields only)', () => {
-    it('returns the instance without throwing', async () => {
+  describe('entrada válida (solo campos declarados)', () => {
+    it('retorna la instancia sin lanzar error', async () => {
       const result = await pipe.transform({ name: 'Alice' }, meta);
 
       expect(result).toHaveProperty('name', 'Alice');
     });
   });
 
-  describe('invalid input (decorator constraint fails)', () => {
-    it('throws HttpException with status 406 when a constraint fails', async () => {
+  describe('entrada inválida (falla de restricción del decorador)', () => {
+    it('lanza HttpException con status 406 cuando falla una restricción', async () => {
       await expect(pipe.transform({ name: '' }, meta)).rejects.toBeInstanceOf(HttpException);
     });
 
-    it('exception status is NOT_ACCEPTABLE (406)', async () => {
+    it('el status de la excepción es NOT_ACCEPTABLE (406)', async () => {
       try {
         await pipe.transform({ name: '' }, meta);
         fail('expected exception not thrown');
@@ -58,7 +58,7 @@ describe('DtoValidatorPipe', () => {
       }
     });
 
-    it('exception response contains ok:false, statusCode 406, prefix DTO_VALIDATOR', async () => {
+    it('la respuesta de la excepción contiene ok:false, statusCode 406, prefix DTO_VALIDATOR', async () => {
       try {
         await pipe.transform({ name: '' }, meta);
         fail('expected exception not thrown');
@@ -73,14 +73,14 @@ describe('DtoValidatorPipe', () => {
     });
   });
 
-  describe('non-class metatype (primitive guard)', () => {
-    it('returns value as-is when metatype is String', async () => {
+  describe('metatipo no-clase (primitive guard)', () => {
+    it('retorna el valor sin modificar cuando el metatipo es String', async () => {
       const result = await pipe.transform('raw-value', { metatype: String, type: 'param', data: '' });
 
       expect(result).toBe('raw-value');
     });
 
-    it('returns value as-is when metatype is undefined', async () => {
+    it('retorna el valor sin modificar cuando el metatipo es undefined', async () => {
       const result = await pipe.transform('raw-value', { metatype: undefined, type: 'param', data: '' });
 
       expect(result).toBe('raw-value');
