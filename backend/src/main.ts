@@ -1,3 +1,4 @@
+import { DtoValidatorPipe } from '@common/pipes/dto-validator.pipe';
 import { ServerEnv } from '@environment/server.environment';
 import { Logger } from '@nestjs/common/services/logger.service';
 import { NestFactory } from '@nestjs/core';
@@ -20,6 +21,7 @@ async function bootstrap() {
   server.use(helmet());
   server.enableCors({ origin, methods, allowedHeaders });
   server.setGlobalPrefix(apiVersion);
+  server.useGlobalPipes(new DtoValidatorPipe());
 
   await server.listen(port, () => {
     logger.debug(`Servidor iniciado en el puerto ${port}, versión de API ${apiVersion}`);
