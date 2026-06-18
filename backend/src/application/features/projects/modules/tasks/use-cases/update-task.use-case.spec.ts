@@ -20,6 +20,12 @@ const mockTasksService = {
   save: jest.fn(),
 } as unknown as TasksService;
 
+const mockCacheStore = {
+  get: jest.fn(),
+  set: jest.fn(),
+  del: jest.fn(),
+};
+
 const projectId = 'project-uuid';
 const taskId = 'task-uuid';
 const userId = 'user-uuid';
@@ -29,7 +35,7 @@ describe('UpdateTaskUseCase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useCase = new UpdateTaskUseCase(mockVerifyProjectAccess, mockValidateAssigneeIsMember, mockTasksService);
+    useCase = new UpdateTaskUseCase(mockVerifyProjectAccess, mockValidateAssigneeIsMember, mockTasksService, mockCacheStore as any);
   });
 
   it('actualiza status correctamente y retorna 200', async () => {
@@ -146,5 +152,16 @@ describe('UpdateTaskUseCase', () => {
 
     const saved = (mockTasksService.save as jest.Mock).mock.calls[0][0] as Task;
     expect(saved.completedAt).toBe(originalDate);
+  });
+
+  it("llama a cache.del('project-summary:{projectId}') tras guardar exitosamente", async () => {
+    const task = Object.assign(new Task(), { taskId, projectId, title: 'Tarea', status: TaskStatus.PENDING, completedAt: null });
+    (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([null, {}]);
+    (mockTasksService.findByTaskId as jest.Mock).mockResolvedValue(task);
+    (mockTasksService.save as jest.Mock).mockResolvedValue(task);
+
+    await useCase.execute(projectId, taskId, userId, { title: 'Actualizada' });
+
+    expect(mockCacheStore.del).toHaveBeenCalledWith(`project-summary:${projectId}`);
   });
 });

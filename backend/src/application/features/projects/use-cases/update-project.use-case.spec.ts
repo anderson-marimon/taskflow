@@ -13,6 +13,12 @@ const mockProjectsService = {
   save: jest.fn(),
 } as unknown as ProjectsService;
 
+const mockCacheStore = {
+  get: jest.fn(),
+  set: jest.fn(),
+  del: jest.fn(),
+};
+
 const ownerId = 'owner-uuid';
 
 describe('UpdateProjectUseCase', () => {
@@ -20,7 +26,7 @@ describe('UpdateProjectUseCase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useCase = new UpdateProjectUseCase(mockVerifyProjectAccess, mockProjectsService);
+    useCase = new UpdateProjectUseCase(mockVerifyProjectAccess, mockProjectsService, mockCacheStore as any);
   });
 
   it('propietario actualiza el proyecto con status 200', async () => {
@@ -88,5 +94,16 @@ describe('UpdateProjectUseCase', () => {
     const result = await useCase.execute('p-id', ownerId, { name: 'Actualizado' });
 
     expect(result.data).toBe(savedProject);
+  });
+
+  it("llama a cache.del('project-summary:p-id') tras actualizar el proyecto", async () => {
+    const project = Object.assign(new Project(), { projectId: 'p-id', ownerId, name: 'Original' });
+    const savedProject = Object.assign(new Project(), { projectId: 'p-id', ownerId, name: 'Actualizado' });
+    (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([null, project]);
+    (mockProjectsService.save as jest.Mock).mockResolvedValue(savedProject);
+
+    await useCase.execute('p-id', ownerId, { name: 'Actualizado' });
+
+    expect(mockCacheStore.del).toHaveBeenCalledWith('project-summary:p-id');
   });
 });

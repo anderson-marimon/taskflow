@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common';
 import { ApiResponse, TApiResponse } from '@common/builders/server-response.builder';
 import { InternalError } from '@common/builders/internal-error.builder';
@@ -8,6 +8,8 @@ import { ValidateAssigneeIsMemberSubquery } from '@features/projects/modules/tas
 import { TaskEntityBuilder } from '@features/projects/modules/tasks/entities/task.entity.builder';
 import { TasksService } from '@features/projects/modules/tasks/services/tasks.service';
 import { CreateTaskDto } from '@features/projects/modules/tasks/dtos/body/create-task.dto';
+import type { CacheStore } from '@services/cache/cache.port';
+import { CACHE_STORE } from '@services/cache/cache.port';
 
 @Injectable()
 export class CreateTaskUseCase {
@@ -15,6 +17,7 @@ export class CreateTaskUseCase {
     private readonly verifyProjectAccess: VerifyProjectAccessSubquery,
     private readonly validateAssigneeIsMember: ValidateAssigneeIsMemberSubquery,
     private readonly tasksService: TasksService,
+    @Inject(CACHE_STORE) private readonly cache: CacheStore,
   ) {}
 
   async execute(projectId: string, userId: string, dto: CreateTaskDto): Promise<TApiResponse> {
@@ -45,6 +48,7 @@ export class CreateTaskUseCase {
 
       const saved = await this.tasksService.save(task);
       saved.prune(['deletedAt']);
+      this.cache.del(`project-summary:${projectId}`);
 
       return ApiResponse.create()
         .withOk(true)

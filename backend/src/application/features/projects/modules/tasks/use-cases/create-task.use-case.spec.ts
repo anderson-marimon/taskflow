@@ -19,6 +19,12 @@ const mockTasksService = {
   save: jest.fn(),
 } as unknown as TasksService;
 
+const mockCacheStore = {
+  get: jest.fn(),
+  set: jest.fn(),
+  del: jest.fn(),
+};
+
 const projectId = 'project-uuid';
 const userId = 'user-uuid';
 
@@ -27,7 +33,7 @@ describe('CreateTaskUseCase', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    useCase = new CreateTaskUseCase(mockVerifyProjectAccess, mockValidateAssigneeIsMember, mockTasksService);
+    useCase = new CreateTaskUseCase(mockVerifyProjectAccess, mockValidateAssigneeIsMember, mockTasksService, mockCacheStore as any);
   });
 
   it('crea tarea con status PENDING y retorna 201', async () => {
@@ -108,5 +114,21 @@ describe('CreateTaskUseCase', () => {
     const result = await useCase.execute(projectId, userId, { title: 'Tarea', description: null, status: null, assigneeId: null });
 
     expect(result.data).not.toHaveProperty('deletedAt');
+  });
+
+  it("llama a cache.del('project-summary:{projectId}') tras crear la tarea", async () => {
+    const savedTask = Object.assign(new Task(), {
+      taskId: 'task-uuid',
+      projectId,
+      title: 'Tarea',
+      status: TaskStatus.PENDING,
+      deletedAt: null,
+    });
+    (mockVerifyProjectAccess.execute as jest.Mock).mockResolvedValue([null, {}]);
+    (mockTasksService.save as jest.Mock).mockResolvedValue(savedTask);
+
+    await useCase.execute(projectId, userId, { title: 'Tarea', description: null, status: null, assigneeId: null });
+
+    expect(mockCacheStore.del).toHaveBeenCalledWith(`project-summary:${projectId}`);
   });
 });
